@@ -1,11 +1,15 @@
 import React from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
 import Modal from './Modal';
+import { useContext } from 'react';
+import { CartContext } from './store/CartContext';
 
-const Header = ({ itemCount, cartItems, onOpenModal, onCloseModal, isModalOpen, totalPrice, onQuantityChange }) => {
+const Header = () => {
+  const {quantityChange, openModal, closeModal, isModalOpen, itemCount, cartItems, totalPrice} = useContext(CartContext);
+
   return (
     <>
-      <Modal isOpen={isModalOpen} onClose={onCloseModal}>
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
         <h2>Cart</h2>
         <div>
           {cartItems.length > 0 ? (
@@ -17,7 +21,7 @@ const Header = ({ itemCount, cartItems, onOpenModal, onCloseModal, isModalOpen, 
                   type="number" 
                   value={cartItem.quantity || 1} 
                   min="1"
-                  onChange={(e) => onQuantityChange(cartItem.id, parseInt(e.target.value, 10))} 
+                  onChange={(e) => quantityChange(cartItem.id, parseInt(e.target.value, 10))} 
                 />
               </div>
             ))
@@ -39,7 +43,7 @@ const Header = ({ itemCount, cartItems, onOpenModal, onCloseModal, isModalOpen, 
             <li><a href="/contact">Contact</a></li>
           </ul>
         </nav>
-        <div className="header__cart" onClick={onOpenModal}>
+        <div className="header__cart" onClick={openModal}>
           <FaShoppingCart />
           <span className="header__cart-count">{itemCount}</span>
         </div>
